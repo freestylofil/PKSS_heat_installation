@@ -1,0 +1,3 @@
+[submodule "lib/structopt"]
+	path = lib/structopt
+	url = https://github.com/p-ranav/structopt
