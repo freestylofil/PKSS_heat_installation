@@ -1,7 +1,7 @@
 # Heat exchange model simulation
 
 ## How to run
-Anaconda environment was used. 1 line required in terminal/anaconda prompt:
+Anaconda environment was used. 1 line required in terminal/anaconda prompt to install all required packages in the specified environment:
 `conda install -c conda-forge implicit`
 
 Imported external packages:
