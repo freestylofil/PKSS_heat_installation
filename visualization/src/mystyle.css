@@ -1,0 +1,51 @@
+.navigationbar {
+    width: 100%;
+    text-align: center;
+    font-size: 1.4em;
+    color: #9FFFCB;
+    background-color: #222;
+    height: 75px;
+    line-height: 75px;
+  }
+
+.sidebar {
+    position: fixed;     /* Fixed Sidebar (stay in place on scroll and position relative to viewport) */
+    height: 100%;
+    width: 75px;     /* Set the width of the sidebar */
+    z-index: 1;      /* Stay on top of everything */
+    top: 3.4em;      /* Stay at the top */
+    background-color: #222; /* Black */
+    overflow-x: hidden;     /* Disable horizontal scroll */
+    padding-top: 10px;
+}
+
+.rotated {
+    writing-mode:vertical-lr;
+    -webkit-transform:rotate(180deg);
+    -moz-transform:rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform:rotate(180deg);
+    transform: rotate(180deg);
+    white-space:nowrap;
+    display:block;
+    bottom:0;
+    width:22px;
+    background-color:#b3b3b3;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    text-align: left;
+}
+
+.chart_headers {
+    text-align: center;
+    width: 100%;
+    background-color: #b3b3b3;
+    font-size: 1.4em;
+}
+
+.collect_button {
+    background-color: #b3b3b3;
+    color: #1a1a1a;
+    text-align: center;
+}
