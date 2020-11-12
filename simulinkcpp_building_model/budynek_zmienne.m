@@ -1,0 +1,9 @@
+mh = 3000; %kg masy zastępcze wszystkich kaloryferów
+ch = 2700; %J/kg/K zastępcze ciepło właściwe kaloryferów
+%Fcob = 40; % m^3/h  - max 
+dzeta = 1000; % kg/m^3 gęstość wody
+cw = 4200; % J/kg/K ciepło właściwe wody
+kh = 12000; % J/K/s współczynnik przenikania ciepła kaloryfer-pokój
+mb = 20000; % J/kg/K masa powietrza w budynku
+kext = 15000; %J/K/s współczynnik utraty ciepła
+cb = 1000; %J/K/s ciepło właściwe powietrza
