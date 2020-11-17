@@ -1,11 +1,13 @@
 import socket
 from threading import Thread
 from json import dumps
+from itertools import chain
 
 
 class MultiServer:
     def __init__(self, host, port, state):
         self.host = host
+        self.IP = {'IP': self.host}
         self.port = port
         self.current_state = state
         self.working = True
@@ -39,7 +41,7 @@ class MultiServer:
             try:
                 data = client.recv(data_size)
                 if data:
-                    client.sendall(dumps(self.current_state).encode('utf-8'))
+                    client.sendall(dumps(dict(chain.from_iterable(d.items() for d in (self.IP, self.current_state)))).encode('utf-8'))
                 else:
                     raise OSError("Client left")
             except:
