@@ -9,7 +9,7 @@ int main()
 	Network network;
 	Simulation simulation;
 
-#ifndef NO_TIMEENDPOINT
+#ifndef NO_TIME
 	Json timeData;
 #endif
 #ifndef NO_ENERGY_SUPPLIER
@@ -20,7 +20,7 @@ int main()
 #endif
 	std::array<Json, 4> buildingData;
 
-#ifndef NO_TIMEENDPOINT
+#ifndef NO_TIME
 	Result timeResult;
 #endif
 #ifndef NO_ENERGY_SUPPLIER
@@ -31,7 +31,7 @@ int main()
 #endif
 	std::array<Result, 4> buildingDataRequestResults;
 
-#ifndef NO_TIMEENDPOINT
+#ifndef NO_TIME
 	network.timeClient.recieveData(timeData, timeResult);
 	network.timeClient.join();
 	while (timeResult == Result::Success)
@@ -75,12 +75,13 @@ int main()
 		network.joinUnicastClients();
 
 		Json dataToSend;
-		dataToSend["id"] = id++;
+		dataToSend["Fzm"] = id++;
+		dataToSend["Fzco"] = 2*id++;
+		dataToSend["Tpco"] = 3*id++;
 		network.server.bindData(dataToSend);
 		LOG << "\n\n\n";
-		getchar();
 
-#ifndef NO_TIMEENDPOINT
+#ifndef NO_TIME
 		network.timeClient.recieveData(timeData, timeResult);
 		network.timeClient.join();
 #endif

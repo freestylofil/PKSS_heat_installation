@@ -137,7 +137,8 @@ Result Socket::sendAll(const void* data, int numberOfBytes)
 Result Socket::sendJson(const Json& jsonData)
 {
     std::string jsonDataStr = jsonData.dump();
-    return sendAll(jsonData.dump().c_str(), 256);
+    jsonDataStr.shrink_to_fit();
+    return sendAll(jsonData.dump().c_str(), jsonDataStr.size());
 }
 
 Result Socket::recieveJson(Json& jsonDestination)

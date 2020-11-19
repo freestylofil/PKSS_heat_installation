@@ -7,7 +7,7 @@ Network::Network()
 	server.start(serverEndpoint);
 	
 	connectUnicastClients();
-	#ifndef NO_TIMEENDPOINT
+	#ifndef NO_TIME
 	timeClient.bindToServer(timeEndpoint);
 	#endif
 	joinUnicastClients();
@@ -40,7 +40,7 @@ void Network::connectUnicastClients()
 #ifndef NO_HEAT_EXCHANGER
 	heatExchangerClient.connectToServer(heatExchangerEndpoint);
 #endif
-	for (std::size_t i = 0; i < buildingClients.size(); ++i)
+	for (std::size_t i = 0; i < buildingEndpoints.size(); ++i)
 	{
 		buildingClients.push_back(Client());
 		buildingClients[i].connectToServer(buildingEndpoints[i]);
