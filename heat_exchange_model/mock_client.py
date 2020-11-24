@@ -1,4 +1,7 @@
-from client import run_client_energy
+import client
 
 if __name__ == '__main__':
-    run_client_energy('localhost', 65432, mock=True)
+
+    host = '192.168.192.82'
+    port = 50621
+
