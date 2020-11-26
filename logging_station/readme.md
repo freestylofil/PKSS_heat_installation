@@ -32,8 +32,8 @@ Specyfikacja funkcji log_into_db:
  Przyjmuje format json. Wymagane pola:
  - "request": "PUT" - informacja dla serwera, że chcemy zapisać wpis w bazie danych
  - "variable": str - nazwa zmiennej procesu, musi być unikalna dla różnych zmiennych
- - "timestamp": str - czas, w którym zmierzono wartość procesu
- - "value": int - wartość procesu
+ - "timestamp": numeric - czas, w którym zmierzono wartość procesu
+ - "value": numeric - wartość procesu
  
 
  
