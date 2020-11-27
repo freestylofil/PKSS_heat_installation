@@ -53,8 +53,8 @@ Specyfikacja funkcji get_from_db:
  - "request": "GET" - informacja dla serwera, że chcemy odczytać dane z bazy danych
  - "variable": str - nazwa zmiennej procesu, musi być unikalna dla różnych zmiennych
  Opcjonalne pola:
- - "time_from": numeric - informuje serwer, od której chwili interesują nas logi, jeśli w bazie danych nie istnieje wpis o wartości identycznej wartość ta zostanie ustalona jako pierwsza w bazie danych
- - "time_to": numeric - informuje serwer, do której chwili interesują nas logi, jeśli w bazie danych nie istnieje wpis o wartości identycznej wartość ta zostanie ustalona jako ostatnia w bazie danych
+ - "time_from": numeric - informuje serwer, od której chwili interesują nas logi
+ - "time_to": numeric - informuje serwer, do której chwili interesują nas logi
  
  Odpowiedź serwera:
  
