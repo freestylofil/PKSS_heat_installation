@@ -52,8 +52,8 @@ def zapisz_dane(var_num):
     else:
         dane = pobier_dane(var_num, 0, 5).decode("utf-8")
     try:
-        dane.index("[Error] Bad request ()")
-        print("[Error] Bad request ()")
+        dane.index("[Error]")
+        print("[Error] Zle zapytanie")
     except ValueError:
         try:
             dane = dane[dane.index("{"):]
