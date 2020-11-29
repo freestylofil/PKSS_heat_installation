@@ -1,1 +1,5 @@
-Kiedyś tu coś będzie prawdopodobnie
+#Wizualizacja lokalna w języku python#
+
+
+
+
