@@ -1,4 +1,4 @@
-#Wizualizacja lokalna w języku python#
+# Wizualizacja lokalna w języku python #
 
 
 
