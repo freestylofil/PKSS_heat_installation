@@ -1,9 +1,9 @@
-from typing import Any, Union
+import numpy as np
 
 
 class WaterTemperature:
     def __init__(self):
-        self._temperature = 77.0
+        self._temperature = 85.0
 
     @property
     def temperature(self):
@@ -17,3 +17,6 @@ class WaterTemperature:
             self._temperature = 70
         else:
             self._temperature = 70 - (2.5 * (To - 6))
+
+    def failure(self):
+        return True if abs(np.random.normal(0, 0.25)) > 1 else False

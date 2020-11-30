@@ -3,15 +3,21 @@ import json
 
 def to_json(ip, timestamp, outdoor_t, water_t):
     to_js = {
-        "ip": ip,
+        "IP": ip,
         "timestamp": timestamp,
-        "Outdoor Temperature": outdoor_t,
-        "Water Temperature": water_t
+        "To": outdoor_t,
+        "Tzm": water_t
     }
     js = json.JSONEncoder().encode(to_js)
     return js
 
-
+def to_json_log(str, timestamp, numeric):
+    to_js = {"request": "PUT",
+             "variable": str,
+             "timestamp": timestamp,
+             "value": numeric}
+    js = json.JSONEncoder().encode(to_js)
+    return js
 """for key in py:
     print(key, '->', py[key])
 print(py["values"]["Water Temperature"])"""

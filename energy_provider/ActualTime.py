@@ -9,7 +9,7 @@ class ActualTime:
     def __init__(self, date=datetime.now()):
         self._date = date
         self._date0 = date
-        self._period = timedelta(seconds=2)
+        self._period = timedelta(minutes=5)
 
     @property
     def date(self) -> datetime:
@@ -23,9 +23,14 @@ class ActualTime:
         return int(datetime.timestamp(self._date))
 
     def check_period(self) -> bool:
-        return False if timedelta.total_seconds((self._date0 - self._date) % self._period) else True
+        if (self._date - self._date0) >= self._period:
+            self._date0 = self.date
+            return True
+        else:
+            return False
+        #return False if timedelta.total_seconds((self._date0 - self._date) % self._period) else True
 
 
-def get_time(host) -> datetime:
-    now = time_client.request(host, version=3)
+def get_time(host, port) -> datetime:
+    now = time_client.request(host, 3,port)
     return datetime.fromtimestamp(int(now.tx_time))
