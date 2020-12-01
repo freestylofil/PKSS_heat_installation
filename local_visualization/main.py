@@ -36,7 +36,7 @@ def pobier_dane(var_numm, od_kad, do_kad):
     # request = b"GET /abc1 HTTP/1.1\n\n\n"
     s.send(request.encode())
     data = s.recv(1024)
-    print(data)
+    # print(data)
 
     return data
 
