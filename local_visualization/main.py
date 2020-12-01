@@ -18,7 +18,6 @@ PORT = 55555
 Tab_val = [[],[],[],[]] # Tzwu Tpwu Tzco Tpco
 Tab_time = [[],[],[],[]]
 
-
 def pobier_dane(var_numm, od_kad, do_kad):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
