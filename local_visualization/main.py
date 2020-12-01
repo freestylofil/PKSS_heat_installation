@@ -12,28 +12,33 @@ HOST = '192.168.192.120'
 PORT = 55555
 
 
-# HOST = '192.168.4.1'
-# PORT = 80
+# HOST = "localhost"
+# PORT = 55555
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT))
 
 Tab_val = [[],[],[],[]] # Tzwu Tpwu Tzco Tpco
 Tab_time = [[],[],[],[]]
 
+
 def pobier_dane(var_numm, od_kad, do_kad):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-        if var_numm == 0:
-            jaka_zmienna = "Tzwu"
-        if var_numm == 1:
-            jaka_zmienna = "Tpwu"
-        if var_numm == 2:
-            jaka_zmienna = "Tzco"
-        if var_numm == 3:
-            jaka_zmienna = "Tpco"
-        request = b"{\"request\":\"GET\",\"variable\":\""+jaka_zmienna+"\",\"time_from\":"+ str(od_kad) + ",\"time_to\":" + str(do_kad) +"\"}"
-        # request = b"GET /abc1 HTTP/1.1\n\n\n"
-        s.send(request)
-        data = s.recv(1024)
-        return data
+    if var_numm == 0:
+        jaka_zmienna = "Tzwu"
+    if var_numm == 1:
+        jaka_zmienna = "Tpwu"
+    if var_numm == 2:
+        jaka_zmienna = "Tzco"
+    if var_numm == 3:
+        jaka_zmienna = "Tpco"
+    request = "{\"request\":\"GET\",\"variable\":\""+jaka_zmienna+"\",\"time_from\":\""+ str(od_kad) + "\",\"time_to\":\"" + str(do_kad) +"\"}"
+    # request = "{\"request\":\"GET\",\"variable\":\"" + jaka_zmienna + "\"}"
+    # request = b"GET /abc1 HTTP/1.1\n\n\n"
+    s.send(request.encode())
+    data = s.recv(1024)
+    print(data)
+
+    return data
 
 
 licznik = 1
@@ -47,17 +52,19 @@ def zapisz_dane(var_num):
     #     randrange(10)) + "}, \"5\": {\"timestamp\": " + str(licznik + 4) + ", \"value\": " + str(randrange(10)) + "}}"
 
     if Tab_val[var_num] != []:
-        dane = pobier_dane(var_num, Tab_time[var_num].index(Tab_time[var_num][-1]), Tab_time[var_num].index(Tab_time[var_num][-1] + 10)).decode("utf-8")
+        dane = pobier_dane(var_num, Tab_time[var_num].index(Tab_time[var_num][-1]), Tab_time[var_num].index(Tab_time[var_num][-1]) + 5).decode("utf-8")
     else:
         dane = pobier_dane(var_num, 0, 5).decode("utf-8")
     try:
         dane.index("[Error]")
-        print("[Error] Zle zapytanie")
     except ValueError:
         try:
             dane = dane[dane.index("{"):]
         except ValueError:
             return -1
+        if len(dane)<3:
+            return -1
+
         json_pomoc = json.loads(dane)
         if Tab_val[var_num] == []:
             Tab_val[var_num].append(int(json_pomoc["1"]["value"])+var_num)
@@ -72,7 +79,7 @@ def zapisz_dane(var_num):
 
 def animate(i):
     # global licznik
-    for i in range(4):
+    for i in range(len(Tab_time)):
         zapisz_dane(i)
     # licznik = licznik + 5
     if keyboard.is_pressed('Esc'):
