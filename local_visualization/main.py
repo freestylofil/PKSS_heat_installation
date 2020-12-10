@@ -52,7 +52,7 @@ def pobier_dane(var_numm, od_kad, do_kad):
         request = b"{\"request\":\"GET\",\"variable\":\"" + jaka_zmienna.encode() + b"\"}"
     s.send(request)
     data = b''
-    
+
     while True:
         data = data + s.recv(4096)
         liczba_lewych = int(data.decode("utf-8").count("{"))
@@ -92,8 +92,7 @@ def zapisz_dane(var_num):
 
 def animate(x):
     for i in range(len(Tab_time)):
-        # zapisz_dane(i)
-        print(i)
+        zapisz_dane(i)
     if keyboard.is_pressed('Esc'):
         sys.exit(0)
 
