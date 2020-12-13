@@ -6,25 +6,33 @@
 ClientSocket::ClientSocket(IPVersion ipversion, SocketHandle handle)
     : Socket(ipversion, handle)
 {
-    assert(ipversion == IPVersion::IPv4);
 }
 
-Result ClientSocket::bind(IPEndpoint endpoint)
-{
-    sockaddr_in addr = endpoint.getSockaddrIPv4();
-    return Socket::bind(endpoint);
-}
 Result ClientSocket::connect(IPEndpoint endpoint)
 {
+    assert(ipversion == IPVersion::IPv4 || ipversion == IPVersion::IPv6);
     serverEndpoint = endpoint;
-    sockaddr_in addr = endpoint.getSockaddrIPv4();
-    int result = ::connect(handle, reinterpret_cast<sockaddr*>(&addr), sizeof(sockaddr_in));
+    int result = 0;
+    if (ipversion == IPVersion::IPv4) //IPv4
+    {
+        sockaddr_in addr = endpoint.getSockaddrIPv4();
+        result = ::connect(handle, reinterpret_cast<sockaddr*>(&addr), sizeof(sockaddr_in));
+    }
+    else //IPv6
+    {
+        sockaddr_in6 addr = endpoint.getSockaddrIPv6();
+        result = ::connect(handle, reinterpret_cast<sockaddr*>(&addr), sizeof(sockaddr_in6));
+    }
     if (result != 0)
     {
-        int error = WSAGetLastError();
-        return Result::GenericError;
+        int errorCode = WSAGetLastError();
+        if (errorCode == WSAEISCONN)
+        {
+            return Result::success;
+        }
+        return errorCodeToResult(errorCode);
     }
-    return Result::Success;
+    return Result::success;
 }
 
 IPEndpoint ClientSocket::getServerEndpoint() const

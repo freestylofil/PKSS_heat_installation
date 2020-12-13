@@ -4,5 +4,7 @@
 enum class SocketOption
 {
 	TCP_NoDelay,
-	SO_Broadcast
+	IPV6_Only,
+	SO_Broadcast,
+	SO_RecieveTimeout
 };

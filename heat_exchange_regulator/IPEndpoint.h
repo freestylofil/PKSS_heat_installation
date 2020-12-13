@@ -18,6 +18,7 @@ public:
 	const std::vector<uint8_t>& getIpBytes() const;
 	unsigned short getPort() const;
 	sockaddr_in getSockaddrIPv4() const;
+	sockaddr_in6 getSockaddrIPv6() const;
 	std::string toString() const;
 private:
 	IPVersion ipversion = IPVersion::Unknown;

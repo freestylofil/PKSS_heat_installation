@@ -5,6 +5,6 @@
 class NetworkEnvironment
 {
 public:
-	static bool initialize();
+	static void initialize();
 	static void shutDown();
 };

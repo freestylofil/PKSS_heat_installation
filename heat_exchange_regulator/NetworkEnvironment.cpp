@@ -1,27 +1,29 @@
 #include "NetworkEnvironment.h"
+#include "NetworkException.h"
 #include <iostream>
 
-bool NetworkEnvironment::initialize()
+void NetworkEnvironment::initialize()
 {
     WORD versionRequested = MAKEWORD(2, 2);
     WSADATA wsadata;
     if (WSAStartup(versionRequested, &wsadata) != 0)
     {
-        std::cerr << "Failed to start up winsock API.";
-        return false;
+        int errorCode = WSAGetLastError();
+        throw NETWORK_EXCEPTION(errorCode);
     }
 
     if (LOBYTE(wsadata.wVersion) != 2 || HIBYTE(wsadata.wVersion) != 2)
     {
-        std::cerr << "Could not find a usable version of the winsock api dll.";
-        return false;
+        throw std::runtime_error("Could not find a usable version of the winsock api dll");
     }
-
-    return true;
 }
 
 void NetworkEnvironment::shutDown()
 {
-    WSACleanup();
+    if (WSACleanup() != 0)
+    {
+        int errorCode = WSAGetLastError();
+        throw NETWORK_EXCEPTION(errorCode);
+    }
 }
 

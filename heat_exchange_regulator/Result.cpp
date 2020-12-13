@@ -6,8 +6,10 @@ Result errorCodeToResult(int errorCode)
 	switch (errorCode)
 	{
 	case WSAECONNRESET:
-		return Result::ConnectionReset;
+		return Result::connectionReset;
+	case WSAEWOULDBLOCK:
+		return Result::wouldBlock;
 	default:
-		return Result::GenericError;
+		return Result::genericError;
 	}
 }
