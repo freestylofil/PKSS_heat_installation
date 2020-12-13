@@ -62,49 +62,89 @@ time_client = NTPClient()   #serwer
 t = functions.get_time(host_t, port_t, time_client)
 ntp = NTPClient()
 #t = ntp.request('europe.pool.ntp.org').tx_time
-#sock_michal = functions.SockClient(address_michal, port_michal)
-#sock_przemek = functions.SockClient(address_przemek, port_przemek)
-#sock_adam = functions.SockClient(address_adam, port_adam)
+sock_michal = functions.SockClient(address_michal, port_michal)
+sock_przemek = functions.SockClient(address_przemek, port_przemek)
+sock_adam = functions.SockClient(address_adam, port_adam)
+sock_kamil = functions.SockClient(addres_kamil, port_kamil)
 print("a")
 
 
 last_t=t
 while True:
-    t = functions.get_time(host_t, port_t, time_client)
-    dt = t - last_t
 
+    rec_zco = sock_michal.receive()
+    T_ZCO = rec_zco['Tzco']
 
-    dT_PCO = dt * (F_COB * dzeta * cw * (T_ZCO - T_PCO) - k_h * (T_PCO - T_R)) / (m_h * c_h)
-    dT_R = dt * (k_h * (T_PCO - T_R) - k_ext * (T_R - T_O)) / (m_b * c_b)
+    resp = sock_michal & sock_adam
 
-    T_PCO = T_PCO + dT_PCO
-    T_R = T_R + dT_R
-
-    pid_E = pid_U - T_R
-    pid_Esum = pid_Esum + pid_E
-    pid_Y = pid_P * pid_E + pid_I * pid_Esum
-    F_COB = pid_Y
-
-    if F_COB < 0:
-        F_COB = 0
-    if F_COB > F_COB_MAX:
-        F_COB = F_COB_MAX
+    if T_ZCO == 0:
+        resp = False
 
     state = {'Tpco': T_PCO, 'Fcob': F_COB, "Tr": T_R, "timestamp": t}
-    #print("Aktualna temperatura:{a:3.2f} Otwarcie zaworu:{b:3.2f}% Temperatura wody powrotnej:{c:3.2f}".format(a=T_R, b=100*F_COB/F_COB_MAX, c=T_PCO))
-    print(state)
 
-    #sock_michal.send(state)
-    #recieve_michal= sock_michal.receive()
-    #T_ZCO=recieve_michal["Tzco"]
+    sock_przemek.sock.send(b'')
+    sock_adam.sock.send(b'1')
 
-    #sock_przemek.send(state)
-    #recieve_przemek = sock_przemek.receive()
-    #sock_adam.send(state)
-    #recieve_adam = sock_adam.receive()
-    #server.rec = state
-    last_t=t
-    server.rec = state
-    time.sleep(1)
+    while resp:
+        try:
+            t = functions.get_time(host_t, port_t, time_client)
+            dt = t - last_t
 
+            sock_michal.send(state)
+            rec_zco = sock_michal.receive()
+            T_ZCO = rec_zco['Tzco']
+
+            sock_adam.sock.send(b'1')
+            rec_o = sock_adam.receive()
+            T_O = rec_o['To']
+
+
+            dT_PCO = dt * (F_COB * dzeta * cw * (T_ZCO - T_PCO) - k_h * (T_PCO - T_R)) / (m_h * c_h)
+            dT_R = dt * (k_h * (T_PCO - T_R) - k_ext * (T_R - T_O)) / (m_b * c_b)
+
+            T_PCO = T_PCO + dT_PCO
+            T_R = T_R + dT_R
+
+            pid_E = pid_U - T_R
+            pid_Esum = pid_Esum + pid_E
+            pid_Y = pid_P * pid_E + pid_I * pid_Esum
+            F_COB = pid_Y
+
+            if F_COB < 0:
+                F_COB = 0
+            if F_COB > F_COB_MAX:
+                F_COB = F_COB_MAX
+
+            state = {'Tpco': T_PCO, 'Fcob': F_COB, "Tr": T_R, "timestamp": t}
+            #print("Aktualna temperatura:{a:3.2f} Otwarcie zaworu:{b:3.2f}% Temperatura wody powrotnej:{c:3.2f}".format(a=T_R, b=100*F_COB/F_COB_MAX, c=T_PCO))
+            print(state)
+
+            #sock_michal.send(state)
+            #recieve_michal= sock_michal.receive()
+            #T_ZCO=recieve_michal["Tzco"]
+
+            #sock_przemek.send(state)
+            #recieve_przemek = sock_przemek.receive()
+            #sock_adam.send(state)
+            #recieve_adam = sock_adam.receive()
+            #server.rec = state
+            last_t=t
+            server.rec = state
+            time.sleep(1)
+            log1 = {"request": "PUT", "variable": "Fcob_2", "timestamp": t, "value": F_COB}
+            log2 = {"request": "PUT", "variable": "Tr_2", "timestamp": t, "value": T_R}
+            log3 = {"request": "PUT", "variable": "Tpco_2", "timestamp": t, "value": T_PCO}
+            sock_przemek.send(log1)
+            sock_przemek.sock.recv(1024)
+            sock_przemek.send(log2)
+            sock_przemek.sock.recv(1024)
+            sock_przemek.send(log3)
+            sock_przemek.sock.recv(1024)
+
+            #dane dla regulatora wymiennika
+            sock_kamil.send(state)
+
+        except(NTPException):
+            time_client = NTPClient()
+            t_prim = functions.get_time(host_t, port_t, time_client)
 
