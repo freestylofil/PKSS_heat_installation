@@ -46,7 +46,7 @@ int main()
 		};
 
 
-		const double Tall = 160.0;
+		const double Tall = 160.0*3600.0;
 
 		unsigned long long prevTime = time(0);
 		double dt = 300.0;
